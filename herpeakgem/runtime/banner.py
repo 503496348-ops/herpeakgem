@@ -25,7 +25,7 @@ _ASCII_LOGO = r""" ____                  _____      _
 LABELS: dict[str, dict[str, str]] = {
     "en": {
         "tagline": "Agent-Native Personalized Tutoring",
-        "lab": "Data Intelligence Lab @ HKU",
+        "lab": "HerPeakGem",
         # init
         "init.mode": "Workspace initializer",
         "init.workspace": "Workspace",
