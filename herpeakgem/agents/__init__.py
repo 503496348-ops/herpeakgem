@@ -1,5 +1,5 @@
 """
-Agents Module - Unified agent system for OpenTutor.
+Agents Module - Unified agent system for HerPeakGem.
 
 This module provides a unified BaseAgent class and module-specific agents:
 - research: Deep research agents (DecomposeAgent, ResearchAgent, etc.)
