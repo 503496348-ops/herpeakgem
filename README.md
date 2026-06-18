@@ -1,0 +1,240 @@
+<div align="center">
+
+<p align="center"><img src="assets/figs/logo/logo.png" alt="HerPeakGem logo" height="56" style="vertical-align: middle;">&nbsp;<img src="assets/figs/logo/banner.png" alt="HerPeakGem" height="48" style="vertical-align: middle;"></p>
+
+# 他山之石 · HerPeakGem: Agent-Native Personalized Tutoring
+
+<p align="center">
+  <a href="https://herpeakgem.info" target="_blank"><img alt="Docs — herpeakgem.info" src="https://img.shields.io/badge/Docs-herpeakgem.info%20%E2%86%97-0A0A0A?style=for-the-badge&labelColor=F5F5F4" height="36"></a>
+</p>
+
+<p align="center">
+  <a href="README_CN.md"><img alt="简体中文" height="40" src="https://img.shields.io/badge/简体中文-CDCFD4"></a>&nbsp;
+  <a href="README.md"><img alt="English" height="40" src="https://img.shields.io/badge/English-BCDCF7"></a>
+</p>
+
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue?style=flat-square)](LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.26962-b31b1b?style=flat-square&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2604.26962)
+
+[Features](#-key-features) · [Get Started](#-get-started) · [Explore](#-explore-herpeakgem) · [CLI](#-herpeakgem-cli--agent-native-interface) · [Ecosystem](#-ecosystem--open-to-the-skills-community) · [Community](#-community)
+
+</div>
+
+---
+
+> 🤝 **We welcome contributions!** See our [Contributing Guide](CONTRIBUTING.md) for branching strategy, coding standards, and how to get started.
+
+### 📦 Releases
+
+> **[2026.6.18]** v1.4.8 — Connect your own **Partners** under **My Agents** and consult them live in chat (their persona, library and skills answer through their own loop), and every Partner gains a private memory via `partner_read` / `partner_memorize` / `partner_search`.
+
+> **[2026.6.17]** v1.4.7 — Connect your local **Claude Code / Codex** and consult it live mid-turn, **My Agents** graduates to a top-level `/agents`, and Partner conversations gain branch / resume / delete with a replayable trace.
+
+> **[2026.6.14]** v1.4.6 — Four-surface consolidation: a **Knowledge Center** with GraphRAG / PageIndex / LightRAG engines and linked-KB / Obsidian mounts, a Space learning dashboard with **My Agents** and top-level Memory, plus document parsing / voice / media settings.
+
+> **[2026.6.13]** v1.4.5 — Guided Learning rebuilt on the chat agent loop with a hard per-type mastery gate and a `/learning` dashboard, a new loop-plugin framework, plus Markdown export for Partner conversations.
+
+> **[2026.6.12]** v1.4.4 — Install community skills from [ClawHub](https://clawhub.ai/) with `herpeakgem skill install` behind a security gate, plus real in-browser DOCX/XLSX previews for knowledge-base files.
+
+> **[2026.6.12]** v1.4.3 — TutorBot becomes **Partners** on a production-grade IM pipeline (15 channels, live streaming), Chat moves to a single agent loop, real per-user isolation, and a rebuilt Visualize.
+
+### 📰 News
+
+- **2026-05-22** 🌐 Official docs site live at [**herpeakgem.info**](https://herpeakgem.info/) — guides, references, and capability tours in one place.
+- **2026-04-10** 📄 Our paper is live on arXiv — read the [preprint](https://arxiv.org/abs/2604.26962) for the design and ideas behind HerPeakGem.
+
+## ✨ Key Features / 核心特性
+
+HerPeakGem is an agent-native learning workspace that connects tutoring, problem solving, quiz generation, research, visualization, and mastery practice in one extensible system.
+
+他山之石（HerPeakGem）是一个 Agent 原生的智能学习工作台，将辅导、解题、出题、研究、可视化和掌握练习整合在一个可扩展的系统中。
+
+- **One runtime for every mode** — Chat, Solve, Quiz, Research, Visualize, and Mastery Path share the same tutoring engine, so context can move with the learner.
+  **统一运行时** — 聊天、解题、出题、研究、可视化和学习路径共享同一个教学引擎，上下文随学习者流动。
+- **Connected learning context** — Knowledge Bases, books, Co-Writer drafts, Space assets, notebooks, and Memory stay available across workflows instead of living in isolated tools.
+  **连通的学习上下文** — 知识库、书籍、协作文档、空间资产、笔记本和记忆跨工作流可用，不再孤立。
+- **Extensible tools and skills** — Built-in tools, MCP tools, built-in skills, and installable community skills let HerPeakGem grow with new learning workflows.
+  **可扩展的工具和技能** — 内置工具、MCP 工具、内置技能和可安装的社区技能让 HerPeakGem 持续成长。
+- **Inspectable memory** — L1 traces, L2 surface summaries, and L3 synthesis make personalization visible, editable, and grounded in prior activity.
+  **可检查的记忆** — L1 追踪、L2 表面摘要和 L3 综合让个性化可见、可编辑、有据可依。
+- **Persistent Partners** — IM-connected companions run on the same agent loop, each with its own soul, channels, workspace, and assigned library.
+  **持久的伙伴** — IM 连接的学习伙伴运行在同一个 Agent 循环上，各自拥有独立的人格、频道、工作区和知识库。
+
+---
+
+## 🚀 Get Started / 快速开始
+
+HerPeakGem ships four installation paths. They all share one workspace layout: settings live in `data/user/settings/` under the directory you launch from (or under `HERPEAKGEM_HOME` / `herpeakgem start --home` if you set one explicitly). For the full app, the recommended flow is **pick a workspace directory → install → `herpeakgem init` → `herpeakgem start`**.
+
+### Option 1 — Install From PyPI / 从 PyPI 安装
+
+```bash
+mkdir -p my-herpeakgem && cd my-herpeakgem
+pip install -U herpeakgem
+herpeakgem init     # prompts for ports + LLM provider + optional embedding
+herpeakgem start    # starts backend + frontend; keep the terminal open
+```
+
+After `herpeakgem start`, open the frontend URL printed in the terminal.
+
+### Option 2 — Install From Source / 从源码安装
+
+```bash
+git clone https://github.com/503496348-ops/herpeakgem.git
+cd HerPeakGem
+
+python3 -m venv .venv && source .venv/bin/activate
+python -m pip install --upgrade pip
+
+python -m pip install -e .
+( cd web && npm ci --legacy-peer-deps )
+
+herpeakgem init
+herpeakgem start
+```
+
+### Option 3 — Docker
+
+```bash
+docker run --rm --name herpeakgem \
+  -p 127.0.0.1:3782:3782 \
+  -p 127.0.0.1:8001:8001 \
+  -v herpeakgem-data:/app/data \
+  ghcr.io/atomcollide/herpeakgem:latest
+```
+
+### Option 4 — CLI Only / 仅 CLI
+
+```bash
+git clone https://github.com/503496348-ops/herpeakgem.git
+cd HerPeakGem
+
+python3 -m venv .venv-cli && source .venv-cli/bin/activate
+python -m pip install --upgrade pip
+
+python -m pip install -e ./packaging/herpeakgem-cli
+herpeakgem init --cli
+herpeakgem chat
+```
+
+## 📖 Explore HerPeakGem / 探索他山之石
+
+Start with the main surfaces you will use day to day: Chat, Partners, Co-Writer, Book, Knowledge, Space, Memory, and Settings.
+
+<div align="center">
+<img src="assets/figs/webui/chat.png" alt="HerPeakGem chat workspace" width="900">
+</div>
+
+<details>
+<summary><b>💬 Chat — The Agent Loop / 聊天 — Agent 循环</b></summary>
+
+Chat is the default capability and the place where most work begins. A single thread can talk normally, call tools, ground itself in selected knowledge bases, read attachments, write notebook records, and continue with the same source inventory across turns.
+
+<div align="center">
+<img src="assets/figs/system/chat-agent-loop.png" alt="HerPeakGem chat agent loop" width="900">
+</div>
+
+</details>
+
+<details>
+<summary><b>🤝 Partner — Persistent Companions / 伙伴 — 持久的学习伴侣</b></summary>
+
+<div align="center">
+<img src="assets/figs/webui/partners.png" alt="HerPeakGem partners workspace" width="900">
+</div>
+
+Partners replace the older TutorBot engine with a cleaner model: every inbound web or IM message becomes a normal ChatOrchestrator turn inside a partner-scoped workspace.
+
+<div align="center">
+<img src="assets/figs/system/partners-architecture.png" alt="HerPeakGem partners architecture" width="900">
+</div>
+
+</details>
+
+<details>
+<summary><b>✍️ Co-Writer — Markdown Drafting / 协作写作 — Markdown 草稿</b></summary>
+
+<div align="center">
+<img src="assets/figs/webui/cowriter.png" alt="HerPeakGem Co-Writer workspace" width="900">
+</div>
+
+Co-Writer is a split-view Markdown workspace for reports, tutorials, notes, and long-form learning artifacts.
+
+</details>
+
+<details>
+<summary><b>📖 Book — Living Books / 书籍 — 活的教材</b></summary>
+
+<p align="center">
+<img src="assets/figs/webui/book01.png" alt="HerPeakGem book reading view" width="31%">
+&nbsp;
+<img src="assets/figs/webui/book02.png" alt="HerPeakGem book interactive block view" width="31%">
+&nbsp;
+<img src="assets/figs/webui/book03.png" alt="HerPeakGem book creation view" width="31%">
+</p>
+
+Book turns selected sources into interactive learning material.
+
+</details>
+
+<details>
+<summary><b>📚 Knowledge — Versioned RAG Libraries / 知识库 — 版本化 RAG 库</b></summary>
+
+<div align="center">
+<img src="assets/figs/webui/knowledge.png" alt="HerPeakGem knowledge base workspace" width="900">
+</div>
+
+Knowledge Bases are the document collections behind RAG. The current stack is LlamaIndex-only, with a flat `version-N` storage layout keyed by embedding signature.
+
+</details>
+
+## 🏗️ HerPeakGem CLI — Agent-Native Interface
+
+```bash
+herpeakgem chat                                          # Interactive REPL
+herpeakgem chat --capability deep_solve --tool rag --kb my-kb
+herpeakgem run chat "Explain Fourier transform"
+herpeakgem run deep_solve "Solve x^2 = 4" --tool rag --kb my-kb
+herpeakgem kb create my-kb --doc textbook.pdf
+herpeakgem memory show
+herpeakgem config show
+```
+
+See [SKILL.md](SKILL.md) for the full CLI reference.
+
+## 🌐 Ecosystem — Open to the Skills Community
+
+HerPeakGem supports installable community skills from [ClawHub](https://clawhub.ai/):
+
+```bash
+herpeakgem skill search "flashcards"
+herpeakgem skill install clawhub:flashcards
+```
+
+## 👥 Community
+
+- [Discord](https://discord.gg/eRsjPgMU4t)
+- [Contributing Guide](CONTRIBUTING.md)
+
+## 📄 License
+
+Apache-2.0 — see [LICENSE](LICENSE) for details.
+
+## 📖 Citation / 引用
+
+If you use this software, please cite it as below / 如果使用本软件，请按以下格式引用：
+
+```bibtex
+@article{zhao2026herpeakgem,
+  title={DeepTutor: Towards Agentic Personalized Tutoring},
+  author={Zhao, Bingxi and Zhang, Jiahao and Ren, Xubin and Guo, Zirui and Chu, Tianzhe and Ma, Yi and Huang, Chao},
+  journal={arXiv preprint arXiv:2604.26962},
+  year={2026}
+}
+```
+
+---
+
+> **Note:** HerPeakGem is built on the research foundation of [DeepTutor](https://arxiv.org/abs/2604.26962) by Zhao et al. (2026). All academic citations and references are preserved as-is.

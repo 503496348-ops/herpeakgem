@@ -1,0 +1,2 @@
+recursive-include herpeakgem_web *
+recursive-include herpeakgem_web/.next *

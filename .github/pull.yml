@@ -1,0 +1,12 @@
+version: "1"
+rules:
+  - base: main
+    upstream: AtomCollide-智械工坊:main
+    mergeMethod: hardreset
+    mergeUnstable: true
+  - base: dev
+    upstream: AtomCollide-智械工坊:dev
+    mergeMethod: hardreset
+    mergeUnstable: true
+label: ":arrow_heading_down: pull"
+conflictLabel: "merge-conflict"
