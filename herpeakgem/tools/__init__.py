@@ -16,6 +16,8 @@ _LAZY_EXPORTS = {
     "BrainstormTool": (".builtin", "BrainstormTool"),
     "CodeExecutionTool": (".builtin", "CodeExecutionTool"),
     "GeoGebraAnalysisTool": (".builtin", "GeoGebraAnalysisTool"),
+    "LearningAnalyticsTool": (".builtin", "LearningAnalyticsTool"),
+    "FlashcardTool": (".builtin", "FlashcardTool"),
     "PaperSearchToolWrapper": (".builtin", "PaperSearchToolWrapper"),
     "RAGTool": (".builtin", "RAGTool"),
     "ReasonTool": (".builtin", "ReasonTool"),

@@ -12,7 +12,9 @@ from herpeakgem.capabilities.obsidian import OBSIDIAN_TOOL_TYPES
 from herpeakgem.capabilities.solve import SOLVE_TOOL_TYPES
 from herpeakgem.capabilities.subagent import SUBAGENT_TOOL_TYPES
 from herpeakgem.core.tool_protocol import BaseTool, ToolDefinition, ToolParameter, ToolResult
+from herpeakgem.tools.analytics_tool import LearningAnalyticsTool
 from herpeakgem.tools.exec_tool import ExecTool
+from herpeakgem.tools.flashcard_tool import FlashcardTool
 from herpeakgem.tools.media_gen_tool import ImagegenTool, VideogenTool
 from herpeakgem.tools.partner_memory import (
     PARTNER_BUILTIN_TOOL_NAMES,
@@ -1461,6 +1463,10 @@ BUILTIN_TOOL_TYPES: tuple[type[BaseTool], ...] = (
     # Image → GeoGebra figure reconstruction. User-toggleable in chat; the
     # solve loop capability force-mounts it for diagram problems.
     GeoGebraAnalysisTool,
+    # Learning analytics — aggregated study stats, knowledge gaps, recommendations
+    LearningAnalyticsTool,
+    # Adaptive flashcard generator with SM-2 spaced repetition
+    FlashcardTool,
     # Text-to-image / text-to-video generation. User-toggleable + per-user
     # grant-gated; the chat pipeline only mounts them when a model is configured.
     ImagegenTool,
@@ -1509,6 +1515,8 @@ USER_TOGGLEABLE_TOOL_NAMES: tuple[str, ...] = (
     "paper_search",
     "reason",
     "geogebra_analysis",
+    "learning_analytics",
+    "flashcard",
     "imagegen",
     "videogen",
 )
