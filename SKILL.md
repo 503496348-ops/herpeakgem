@@ -4,6 +4,13 @@ version: 1.0.0
 description: 他山之石（HerPeakGem）— Agent智能教育与个性化学习系统
 author: AtomCollide-智械工坊团队
 license: Apache-2.0
+triggers:
+  - 智能教育
+  - 个性化学习
+  - AI tutor
+  - 知识库管理
+  - 他山之石
+  - herpeakgem
 ---
 
 # HerPeakGem CLI Skill
