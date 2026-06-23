@@ -1,7 +1,7 @@
 ---
 name: herpeakgem
 version: 1.0.0
-description: 他山之石（HerPeakGem）— Agent智能教育与个性化学习系统
+description: "AI智能教育与个性化学习系统。深度求解·测验生成·深度研究·可视化·数学动画·掌握路径。当需要AI辅导学习、生成测验题、分析学习进度时使用。"
 author: AtomCollide-智械工坊团队
 license: Apache-2.0
 triggers:
