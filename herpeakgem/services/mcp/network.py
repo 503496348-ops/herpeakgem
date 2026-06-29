@@ -1,7 +1,6 @@
 """
 Network guards for remote MCP servers (SSRF protection).
 
-Adapted from nanobot's ``security/network.py``. The posture is calibrated to
 HerPeakGem's current trust model — every user may configure MCP servers,
 including stdio (host subprocess), so the URL guard exists to stop
 *accidental* dangerous targets rather than a determined insider:
