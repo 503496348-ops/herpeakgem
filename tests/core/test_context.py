@@ -5,8 +5,8 @@ from __future__ import annotations
 from herpeakgem.core.context import Attachment, UnifiedContext
 from herpeakgem.core.errors import (
     ConfigurationError,
-    HerPeakGemError,
     EnvironmentConfigError,
+    HerPeakGemError,
     LLMContextError,
     LLMServiceError,
     ServiceError,

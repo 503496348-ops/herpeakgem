@@ -1254,7 +1254,9 @@ class TestStart:
         ch = _make_channel()
         fake_zulip = SimpleNamespace(Client=MagicMock())
         monkeypatch.setitem(sys.modules, "zulip", fake_zulip)
-        with patch("herpeakgem.partners.channels.zulip.ZulipChannel._call_with_retry") as mock_retry:
+        with patch(
+            "herpeakgem.partners.channels.zulip.ZulipChannel._call_with_retry"
+        ) as mock_retry:
             mock_retry.return_value = {"result": "error"}
             await ch.start()
 

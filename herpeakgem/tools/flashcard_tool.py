@@ -18,10 +18,10 @@ from __future__ import annotations
 
 import json
 import logging
-import time
-import uuid
 from pathlib import Path
+import time
 from typing import Any
+import uuid
 
 from herpeakgem.core.tool_protocol import BaseTool, ToolDefinition, ToolParameter, ToolResult
 
@@ -32,22 +32,23 @@ logger = logging.getLogger(__name__)
 # Flashcard data model (JSON-serialisable, stored on disk)
 # ---------------------------------------------------------------------------
 
+
 def _flashcard_schema() -> dict[str, Any]:
     """Return a blank flashcard template."""
     return {
         "id": "",
-        "front": "",       # Question / prompt side
-        "back": "",        # Answer side
-        "tags": [],        # Topic tags for filtering
-        "difficulty": 0,   # 0=new, 1=easy, 2=medium, 3=hard
+        "front": "",  # Question / prompt side
+        "back": "",  # Answer side
+        "tags": [],  # Topic tags for filtering
+        "difficulty": 0,  # 0=new, 1=easy, 2=medium, 3=hard
         "interval_days": 0,
         "ease_factor": 2.5,  # SM-2 ease factor
         "repetitions": 0,
-        "lapses": 0,       # Times forgotten after being learned
+        "lapses": 0,  # Times forgotten after being learned
         "next_review": 0.0,  # Unix timestamp
         "last_review": 0.0,
         "created_at": 0.0,
-        "source": "",      # Where the card was generated from
+        "source": "",  # Where the card was generated from
     }
 
 
@@ -69,9 +70,11 @@ def _deck_schema() -> dict[str, Any]:
 # Deck storage (file-based, under workspace)
 # ---------------------------------------------------------------------------
 
+
 def _get_decks_dir() -> Path:
     """Resolve the flashcard decks directory under the workspace."""
     from herpeakgem.services.path_service import get_path_service
+
     decks_dir = get_path_service().get_workspace_dir() / "flashcards"
     decks_dir.mkdir(parents=True, exist_ok=True)
     return decks_dir
@@ -97,14 +100,16 @@ def _list_decks() -> list[dict[str, Any]]:
     for f in sorted(decks_dir.glob("*.json")):
         try:
             deck = json.loads(f.read_text(encoding="utf-8"))
-            decks.append({
-                "id": deck["id"],
-                "name": deck["name"],
-                "description": deck.get("description", ""),
-                "card_count": len(deck.get("cards", [])),
-                "tags": deck.get("tags", []),
-                "updated_at": deck.get("updated_at", 0),
-            })
+            decks.append(
+                {
+                    "id": deck["id"],
+                    "name": deck["name"],
+                    "description": deck.get("description", ""),
+                    "card_count": len(deck.get("cards", [])),
+                    "tags": deck.get("tags", []),
+                    "updated_at": deck.get("updated_at", 0),
+                }
+            )
         except Exception:
             logger.warning("Skipping corrupt deck file: %s", f)
     return decks
@@ -113,6 +118,7 @@ def _list_decks() -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 # SM-2 spaced repetition engine (standalone, mirrors learning/scheduler.py logic)
 # ---------------------------------------------------------------------------
+
 
 def _sm2_review(card: dict[str, Any], quality: int) -> dict[str, Any]:
     """Apply SM-2 algorithm to a flashcard after review.
@@ -247,6 +253,7 @@ async def _generate_cards_with_llm(
 # Flashcard tool actions
 # ---------------------------------------------------------------------------
 
+
 async def _action_generate(kwargs: dict[str, Any]) -> ToolResult:
     """Generate flashcards from source text and save to a deck."""
     source = str(kwargs.get("source_text") or "").strip()
@@ -259,7 +266,9 @@ async def _action_generate(kwargs: dict[str, Any]) -> ToolResult:
 
     cards = await _generate_cards_with_llm(source, num_cards, focus_tags)
     if not cards:
-        return ToolResult(content="No flashcards could be generated from the source text.", success=False)
+        return ToolResult(
+            content="No flashcards could be generated from the source text.", success=False
+        )
 
     # Create or append to deck
     deck_id = str(kwargs.get("deck_id") or "").strip()
@@ -281,14 +290,18 @@ async def _action_generate(kwargs: dict[str, Any]) -> ToolResult:
     _save_deck(deck)
 
     return ToolResult(
-        content=json.dumps({
-            "action": "generate",
-            "deck_id": deck["id"],
-            "deck_name": deck["name"],
-            "cards_generated": len(cards),
-            "total_cards": len(deck["cards"]),
-            "sample": [{"front": c["front"], "back": c["back"][:80]} for c in cards[:3]],
-        }, ensure_ascii=False, indent=2),
+        content=json.dumps(
+            {
+                "action": "generate",
+                "deck_id": deck["id"],
+                "deck_name": deck["name"],
+                "cards_generated": len(cards),
+                "total_cards": len(deck["cards"]),
+                "sample": [{"front": c["front"], "back": c["back"][:80]} for c in cards[:3]],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
         metadata={"flashcard_deck": {"id": deck["id"], "card_count": len(deck["cards"])}},
     )
 
@@ -320,13 +333,19 @@ def _action_review(kwargs: dict[str, Any]) -> ToolResult:
             return ToolResult(content=f"Card '{card_id}' not found in deck.", success=False)
         _save_deck(deck)
         return ToolResult(
-            content=json.dumps({
-                "action": "review_recorded",
-                "card_id": card_id,
-                "quality": quality,
-                "next_review_days": deck["cards"][[c["id"] for c in deck["cards"]].index(card_id)]["interval_days"],
-                "due_cards_remaining": len(_get_due_cards(deck["cards"])),
-            }, ensure_ascii=False, indent=2),
+            content=json.dumps(
+                {
+                    "action": "review_recorded",
+                    "card_id": card_id,
+                    "quality": quality,
+                    "next_review_days": deck["cards"][
+                        [c["id"] for c in deck["cards"]].index(card_id)
+                    ]["interval_days"],
+                    "due_cards_remaining": len(_get_due_cards(deck["cards"])),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
             metadata={"flashcard_review": {"card_id": card_id, "quality": quality}},
         )
 
@@ -335,31 +354,39 @@ def _action_review(kwargs: dict[str, Any]) -> ToolResult:
     due = _get_due_cards(deck["cards"], limit)
     if not due:
         return ToolResult(
-            content=json.dumps({
-                "action": "no_due_cards",
-                "message": "No cards are due for review right now. Great job!",
-                "next_review_in_hours": _hours_until_next(deck["cards"]),
-            }, ensure_ascii=False, indent=2),
+            content=json.dumps(
+                {
+                    "action": "no_due_cards",
+                    "message": "No cards are due for review right now. Great job!",
+                    "next_review_in_hours": _hours_until_next(deck["cards"]),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
         )
 
     return ToolResult(
-        content=json.dumps({
-            "action": "review_session",
-            "deck_id": deck_id,
-            "deck_name": deck["name"],
-            "due_count": len(due),
-            "cards": [
-                {
-                    "card_id": c["id"],
-                    "front": c["front"],
-                    "tags": c["tags"],
-                    "difficulty": c["difficulty"],
-                    "repetitions": c["repetitions"],
-                }
-                for c in due
-            ],
-            "instruction": "Present each card's FRONT to the learner. When they answer, submit their answer with quality 0-5 (0=blackout, 5=perfect).",
-        }, ensure_ascii=False, indent=2),
+        content=json.dumps(
+            {
+                "action": "review_session",
+                "deck_id": deck_id,
+                "deck_name": deck["name"],
+                "due_count": len(due),
+                "cards": [
+                    {
+                        "card_id": c["id"],
+                        "front": c["front"],
+                        "tags": c["tags"],
+                        "difficulty": c["difficulty"],
+                        "repetitions": c["repetitions"],
+                    }
+                    for c in due
+                ],
+                "instruction": "Present each card's FRONT to the learner. When they answer, submit their answer with quality 0-5 (0=blackout, 5=perfect).",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
         metadata={"flashcard_session": {"deck_id": deck_id, "due_count": len(due)}},
     )
 
@@ -380,7 +407,9 @@ def _action_stats(kwargs: dict[str, Any]) -> ToolResult:
         # List all decks
         decks = _list_decks()
         return ToolResult(
-            content=json.dumps({"action": "list_decks", "decks": decks}, ensure_ascii=False, indent=2),
+            content=json.dumps(
+                {"action": "list_decks", "decks": decks}, ensure_ascii=False, indent=2
+            ),
             metadata={"flashcard_decks": decks},
         )
 
@@ -444,7 +473,9 @@ def _action_export(kwargs: dict[str, Any]) -> ToolResult:
         content = "\n".join(lines)
         return ToolResult(
             content=f"Exported {len(cards)} cards in Anki CSV format:\n\n```\n{content[:3000]}\n```",
-            metadata={"flashcard_export": {"format": "csv", "card_count": len(cards), "content": content}},
+            metadata={
+                "flashcard_export": {"format": "csv", "card_count": len(cards), "content": content}
+            },
         )
     else:
         # JSON export
@@ -464,6 +495,7 @@ def _action_export(kwargs: dict[str, Any]) -> ToolResult:
 # ---------------------------------------------------------------------------
 # Tool class (registered in BUILTIN_TOOL_TYPES)
 # ---------------------------------------------------------------------------
+
 
 class FlashcardTool(BaseTool):
     """Generate, review, and manage adaptive flashcard decks with SM-2 spaced repetition."""
