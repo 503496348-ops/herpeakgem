@@ -3,15 +3,16 @@
 from __future__ import annotations
 
 import time
+
 import pytest
 
 from herpeakgem.tools.flashcard_tool import (
     FlashcardTool,
-    _flashcard_schema,
     _deck_schema,
-    _sm2_review,
+    _flashcard_schema,
     _get_due_cards,
     _hours_until_next,
+    _sm2_review,
 )
 
 

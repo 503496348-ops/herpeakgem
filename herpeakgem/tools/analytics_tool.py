@@ -22,10 +22,10 @@ Brand: AtomCollide-智械工坊
 
 from __future__ import annotations
 
+from collections import Counter, defaultdict
 import json
 import logging
 import time
-from collections import Counter, defaultdict
 from typing import Any
 
 from herpeakgem.core.tool_protocol import BaseTool, ToolDefinition, ToolParameter, ToolResult
@@ -90,14 +90,16 @@ def _compute_module_breakdown(
     for mid, stats in module_stats.items():
         total = stats["total"]
         kp_count = max(stats["kp_count"], 1)
-        result.append({
-            "module_id": mid,
-            "name": module_names.get(mid, mid),
-            "attempts": total,
-            "accuracy_pct": round(stats["correct"] / total * 100, 1) if total else 0.0,
-            "avg_mastery_pct": round(stats["kp_mastery_sum"] / kp_count * 100, 1),
-            "kp_count": stats["kp_count"],
-        })
+        result.append(
+            {
+                "module_id": mid,
+                "name": module_names.get(mid, mid),
+                "attempts": total,
+                "accuracy_pct": round(stats["correct"] / total * 100, 1) if total else 0.0,
+                "avg_mastery_pct": round(stats["kp_mastery_sum"] / kp_count * 100, 1),
+                "kp_count": stats["kp_count"],
+            }
+        )
     result.sort(key=lambda r: r["avg_mastery_pct"])
     return result
 
@@ -111,18 +113,23 @@ def _detect_knowledge_gaps(
     kp_info: dict[str, dict[str, str]] = {}
     for mod in modules:
         for kp in mod.get("knowledge_points", []):
-            kp_info[kp["id"]] = {"name": kp.get("name", kp["id"]), "module": mod.get("name", mod["id"])}
+            kp_info[kp["id"]] = {
+                "name": kp.get("name", kp["id"]),
+                "module": mod.get("name", mod["id"]),
+            }
 
     ranked = sorted(mastery_levels.items(), key=lambda kv: kv[1])
     gaps = []
     for kp_id, mastery in ranked[:limit]:
         info = kp_info.get(kp_id, {"name": kp_id, "module": "?"})
-        gaps.append({
-            "knowledge_point_id": kp_id,
-            "name": info["name"],
-            "module": info["module"],
-            "mastery_pct": round(mastery * 100, 1),
-        })
+        gaps.append(
+            {
+                "knowledge_point_id": kp_id,
+                "name": info["name"],
+                "module": info["module"],
+                "mastery_pct": round(mastery * 100, 1),
+            }
+        )
     return gaps
 
 
@@ -142,16 +149,20 @@ def _review_forecast(repetition_states: dict[str, dict], limit: int = 10) -> lis
     for kp_id, state in repetition_states.items():
         due_at = state.get("next_review_at", 0)
         if due_at > now:
-            upcoming.append({
-                "knowledge_point_id": kp_id,
-                "due_in_hours": round((due_at - now) / 3600, 1),
-            })
+            upcoming.append(
+                {
+                    "knowledge_point_id": kp_id,
+                    "due_in_hours": round((due_at - now) / 3600, 1),
+                }
+            )
         else:
-            upcoming.append({
-                "knowledge_point_id": kp_id,
-                "due_in_hours": 0,
-                "overdue": True,
-            })
+            upcoming.append(
+                {
+                    "knowledge_point_id": kp_id,
+                    "due_in_hours": 0,
+                    "overdue": True,
+                }
+            )
     upcoming.sort(key=lambda r: r["due_in_hours"])
     return upcoming[:limit]
 
@@ -210,19 +221,27 @@ def _generate_recommendations(
     recs: list[str] = []
 
     if accuracy.get("accuracy_pct", 0) < 60:
-        recs.append("🎯 Overall accuracy is below 60%. Consider reviewing foundational concepts before attempting new material.")
+        recs.append(
+            "🎯 Overall accuracy is below 60%. Consider reviewing foundational concepts before attempting new material."
+        )
 
     if accuracy.get("recent_accuracy_pct", 0) < accuracy.get("accuracy_pct", 0) - 10:
-        recs.append("📉 Recent accuracy has dropped significantly. Take a review session to consolidate earlier material.")
+        recs.append(
+            "📉 Recent accuracy has dropped significantly. Take a review session to consolidate earlier material."
+        )
 
     if gaps:
         weakest = gaps[0]
-        recs.append(f"🔍 Focus on **{weakest['name']}** (mastery {weakest['mastery_pct']}%) — this is your weakest knowledge point.")
+        recs.append(
+            f"🔍 Focus on **{weakest['name']}** (mastery {weakest['mastery_pct']}%) — this is your weakest knowledge point."
+        )
 
     if module_breakdown:
         weakest_mod = module_breakdown[0]
         if weakest_mod["avg_mastery_pct"] < 50:
-            recs.append(f"📖 Module **{weakest_mod['name']}** needs attention (avg mastery {weakest_mod['avg_mastery_pct']}%).")
+            recs.append(
+                f"📖 Module **{weakest_mod['name']}** needs attention (avg mastery {weakest_mod['avg_mastery_pct']}%)."
+            )
 
     top_error = max(error_dist.items(), key=lambda kv: kv[1]) if error_dist else None
     if top_error:
@@ -236,7 +255,9 @@ def _generate_recommendations(
         recs.append(_ERROR_TIPS.get(error_type, f"⚠️ Most common error type: {error_type}."))
 
     if not recs:
-        recs.append("✅ Great progress! Keep up with your spaced-repetition reviews to maintain mastery.")
+        recs.append(
+            "✅ Great progress! Keep up with your spaced-repetition reviews to maintain mastery."
+        )
 
     return recs
 
@@ -259,16 +280,25 @@ def compute_analytics(progress_data: dict[str, Any]) -> dict[str, Any]:
     recommendations = _generate_recommendations(gaps, module_breakdown, error_dist, accuracy)
 
     total_kps = sum(len(m.get("knowledge_points", [])) for m in modules)
-    mastered_kps = sum(1 for kp_list in modules for kp in kp_list.get("knowledge_points", []) if mastery_levels.get(kp["id"], 0) >= 0.7)
+    mastered_kps = sum(
+        1
+        for kp_list in modules
+        for kp in kp_list.get("knowledge_points", [])
+        if mastery_levels.get(kp["id"], 0) >= 0.7
+    )
 
     return {
         "book_id": book_id,
         "summary": {
             "total_knowledge_points": total_kps,
             "mastered_knowledge_points": mastered_kps,
-            "mastery_completion_pct": round(mastered_kps / total_kps * 100, 1) if total_kps else 0.0,
+            "mastery_completion_pct": round(mastered_kps / total_kps * 100, 1)
+            if total_kps
+            else 0.0,
             "total_attempts": accuracy["total"],
-            "active_errors": sum(1 for r in error_records if r.get("status") in ("active", "retrying")),
+            "active_errors": sum(
+                1 for r in error_records if r.get("status") in ("active", "retrying")
+            ),
         },
         "accuracy": accuracy,
         "module_breakdown": module_breakdown,
@@ -283,6 +313,7 @@ def compute_analytics(progress_data: dict[str, Any]) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # Tool class (registered in BUILTIN_TOOL_TYPES)
 # ---------------------------------------------------------------------------
+
 
 class LearningAnalyticsTool(BaseTool):
     """Compute aggregated learning analytics from mastery path data."""
@@ -350,15 +381,17 @@ class LearningAnalyticsTool(BaseTool):
                     continue
                 data = progress.model_dump(mode="json")
                 analytics = compute_analytics(data)
-                path_summaries.append({
-                    "book_id": bid,
-                    "total_kps": analytics["summary"]["total_knowledge_points"],
-                    "mastered_kps": analytics["summary"]["mastered_knowledge_points"],
-                    "mastery_completion_pct": analytics["summary"]["mastery_completion_pct"],
-                    "total_attempts": analytics["accuracy"]["total"],
-                    "accuracy_pct": analytics["accuracy"]["accuracy_pct"],
-                    "study_streak_days": analytics["study_streak"]["current_streak_days"],
-                })
+                path_summaries.append(
+                    {
+                        "book_id": bid,
+                        "total_kps": analytics["summary"]["total_knowledge_points"],
+                        "mastered_kps": analytics["summary"]["mastered_knowledge_points"],
+                        "mastery_completion_pct": analytics["summary"]["mastery_completion_pct"],
+                        "total_attempts": analytics["accuracy"]["total"],
+                        "accuracy_pct": analytics["accuracy"]["accuracy_pct"],
+                        "study_streak_days": analytics["study_streak"]["current_streak_days"],
+                    }
+                )
                 total_attempts += analytics["accuracy"]["total"]
                 total_correct += analytics["accuracy"]["correct"]
                 total_kps += analytics["summary"]["total_knowledge_points"]
@@ -366,8 +399,12 @@ class LearningAnalyticsTool(BaseTool):
 
             overview = {
                 "paths_count": len(path_summaries),
-                "overall_accuracy_pct": round(total_correct / total_attempts * 100, 1) if total_attempts else 0.0,
-                "overall_mastery_pct": round(total_mastered / total_kps * 100, 1) if total_kps else 0.0,
+                "overall_accuracy_pct": round(total_correct / total_attempts * 100, 1)
+                if total_attempts
+                else 0.0,
+                "overall_mastery_pct": round(total_mastered / total_kps * 100, 1)
+                if total_kps
+                else 0.0,
                 "total_attempts": total_attempts,
                 "total_knowledge_points": total_kps,
                 "total_mastered": total_mastered,

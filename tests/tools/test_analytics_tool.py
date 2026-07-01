@@ -3,16 +3,17 @@
 from __future__ import annotations
 
 import time
+
 import pytest
 
 from herpeakgem.tools.analytics_tool import (
     LearningAnalyticsTool,
-    compute_analytics,
     _compute_accuracy,
     _detect_knowledge_gaps,
     _error_type_distribution,
     _generate_recommendations,
     _study_streak,
+    compute_analytics,
 )
 
 
