@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Required for linux/arm64 cross-compilation on GitHub-hosted ubuntu runners
       - name: Set up QEMU
