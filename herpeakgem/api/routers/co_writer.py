@@ -29,17 +29,24 @@ from herpeakgem.services.llm import clean_thinking_tags
 from herpeakgem.services.settings.interface_settings import get_ui_language
 
 router = APIRouter()
-
-# Initialize logger with config
-config = load_config_with_main("main.yaml", PROJECT_ROOT)
-log_dir = config.get("paths", {}).get("user_log_dir") or config.get("logging", {}).get("log_dir")
 logger = logging.getLogger(__name__)
 
 _edit_agent: EditAgent | None = None
 
 
+def _load_optional_main_config() -> dict:
+    """Load main.yaml when available without making module import fail in tests."""
+
+    try:
+        config = load_config_with_main("main.yaml", PROJECT_ROOT)
+    except FileNotFoundError:
+        return {}
+    return config if isinstance(config, dict) else {}
+
+
 def _current_language() -> str:
-    # Prefer UI settings, fall back to main.yaml system.language
+    # Prefer UI settings, fall back to main.yaml system.language when present.
+    config = _load_optional_main_config()
     return get_ui_language(default=config.get("system", {}).get("language", "en"))
 
 
