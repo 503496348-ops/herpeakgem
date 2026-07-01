@@ -339,3 +339,11 @@ If you use this software, please cite it as below / 如果使用本软件，请�
 
 AtomCollide-智械工坊团队出品。更多产品见：[AtomCollide Product Matrix](https://503496348-ops.github.io/atomcollide-product-matrix/)。
 
+## Governance Links
+
+- [LICENSE](LICENSE)
+- [CHANGELOG](CHANGELOG.md)
+- [SECURITY](SECURITY.md)
+- [CONTRIBUTING](CONTRIBUTING.md)
+
+
