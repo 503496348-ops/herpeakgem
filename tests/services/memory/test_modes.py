@@ -64,7 +64,9 @@ async def test_update_l2_appends_facts_from_chunk(memory_dir, monkeypatch):
 
     # Force a tiny chunker so each entity ends up in its own chunk.
     with (
-        patch("herpeakgem.services.memory.consolidator.modes.update.call_llm", side_effect=fake_llm),
+        patch(
+            "herpeakgem.services.memory.consolidator.modes.update.call_llm", side_effect=fake_llm
+        ),
         patch.object(update_mod, "load_memory_settings") as mock_settings,
     ):
         from herpeakgem.services.memory.settings import (
@@ -149,7 +151,9 @@ async def test_update_l2_drops_facts_with_out_of_pool_refs(memory_dir, monkeypat
         )
 
     with (
-        patch("herpeakgem.services.memory.consolidator.modes.update.call_llm", side_effect=fake_llm),
+        patch(
+            "herpeakgem.services.memory.consolidator.modes.update.call_llm", side_effect=fake_llm
+        ),
         patch.object(update_mod, "load_memory_settings") as mock_settings,
     ):
         from herpeakgem.services.memory.settings import (
@@ -205,7 +209,9 @@ async def test_audit_l2_applies_replace_edit(memory_dir, monkeypatch):
             + ', "new_text": "claims Y", "refs": ["chat:01ABC"], "reason": "matched evidence"}]}'
         )
 
-    with patch("herpeakgem.services.memory.consolidator.modes.audit.call_llm", side_effect=fake_llm):
+    with patch(
+        "herpeakgem.services.memory.consolidator.modes.audit.call_llm", side_effect=fake_llm
+    ):
         result = await audit_mod.run_audit("L2", "chat", language="en", budget=1)
 
     new_md = path.read_text(encoding="utf-8")

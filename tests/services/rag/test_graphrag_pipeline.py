@@ -24,7 +24,10 @@ from herpeakgem.services.rag.factory import (
 from herpeakgem.services.rag.index_versioning import resolve_storage_dir_for_read
 from herpeakgem.services.rag.pipelines.graphrag import config as gr_config
 from herpeakgem.services.rag.pipelines.graphrag import engine, ingestion, storage
-from herpeakgem.services.rag.pipelines.graphrag.pipeline import GraphRagPipeline, _context_to_sources
+from herpeakgem.services.rag.pipelines.graphrag.pipeline import (
+    GraphRagPipeline,
+    _context_to_sources,
+)
 
 # --------------------------------------------------------------------------- #
 # factory routing

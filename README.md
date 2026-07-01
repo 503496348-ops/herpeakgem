@@ -200,7 +200,11 @@ herpeakgem run deep_solve "Solve x^2 = 4" --tool rag --kb my-kb
 herpeakgem kb create my-kb --doc textbook.pdf
 herpeakgem memory show
 herpeakgem config show
+herpeakgem provider login openai-codex      # OAuth login
+herpeakgem provider login github-copilot    # Validate existing GitHub Copilot auth
 ```
+
+Provider auth (`openai-codex` OAuth login; `github-copilot` validates an existing Copilot auth session)
 
 See [SKILL.md](SKILL.md) for the full CLI reference.
 
