@@ -1,3 +1,32 @@
+<!-- ZHIXIE_PROFILE_POLISH_START -->
+
+<p align="left">
+<a href="https://github.com/503496348-ops/herpeakgem/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/503496348-ops/herpeakgem?style=social"></a>
+<a href="https://github.com/503496348-ops/herpeakgem/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/503496348-ops/herpeakgem"></a>
+<img alt="License" src="https://img.shields.io/github/license/503496348-ops/herpeakgem">
+<a href="https://github.com/503496348-ops/herpeakgem/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/503496348-ops/herpeakgem/actions/workflows/ci.yml/badge.svg"></a>
+<img alt="Domain" src="https://img.shields.io/badge/domain-%E6%99%BA%E8%83%BD%E6%95%99%E8%82%B2-blue">
+</p>
+
+## Highlights
+
+- **Product**: HerPeakGem / 他山之石
+- **Domain**: 智能教育
+- **Maintained by**: [503496348-ops](https://github.com/503496348-ops) product matrix
+- **Delivery posture**: one-click setup, doctor diagnostics, smoke test, convergence gate, and clean-clone verification are part of the maintenance standard.
+
+## Quality Gates
+
+```bash
+./install.sh
+python3 scripts/doctor.py
+python3 scripts/smoke.py
+python3 scripts/product_convergence_gate.py --json
+python3 -m pytest tests/ -q
+```
+
+<!-- ZHIXIE_PROFILE_POLISH_END -->
+
 ## 一键安装 / One-click Quickstart
 
 ```bash
