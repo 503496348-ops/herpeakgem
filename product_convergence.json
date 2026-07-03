@@ -1,0 +1,35 @@
+{
+  "repo": "herpeakgem",
+  "entrypoints": [
+    "herpeakgem/__main__.py",
+    "herpeakgem/agents/math_animator/pipeline.py",
+    "herpeakgem/agents/question/pipeline.py",
+    "herpeakgem/agents/research/pipeline.py",
+    "herpeakgem/agents/visualize/pipeline.py",
+    "herpeakgem/api/main.py",
+    "herpeakgem/services/rag/pipelines/graphrag/pipeline.py",
+    "herpeakgem/services/rag/pipelines/lightrag/pipeline.py",
+    "herpeakgem/services/rag/pipelines/llamaindex/pipeline.py",
+    "herpeakgem/services/rag/pipelines/pageindex/pipeline.py",
+    "herpeakgem/services/sandbox/runner/server.py",
+    "herpeakgem_cli/__main__.py"
+  ],
+  "smoke_targets": [
+    "herpeakgem/book/kb_health.py",
+    "herpeakgem/multi_user/audit.py",
+    "herpeakgem/services/memory/consolidator/guards.py",
+    "herpeakgem/services/memory/consolidator/modes/audit.py",
+    "herpeakgem/services/rag/index_probe.py",
+    "scripts/product_convergence_gate.py"
+  ],
+  "known_external_reference_files": [
+    "herpeakgem/multi_user/identity.py",
+    "herpeakgem/services/config/knowledge_base_config.py",
+    "herpeakgem/skills/builtin/pdf/SKILL.md",
+    "herpeakgem/tools/question/question_extractor.py",
+    "scripts/product_convergence_gate.py",
+    "tests/api/test_unified_ws_turn_runtime.py",
+    "tests/multi_user/test_registration_invite_only.py"
+  ],
+  "policy": "External/fusion references are allowed only when explicitly reviewed here; new fusion work must add a smoke target or entrypoint wiring."
+}
