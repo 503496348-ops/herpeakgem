@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import glob
 from pathlib import Path
 from typing import Optional
 
@@ -32,13 +33,42 @@ def _get_kb_manager() -> KnowledgeBaseManager:
 
 
 def _collect_documents(docs: list[str], docs_dir: Optional[str]) -> list[str]:
-    """Collect and de-duplicate document files from explicit paths and a directory."""
+    """Collect and de-duplicate document files from explicit paths and a directory.
+
+    Supported inputs for ``docs``:
+    - file paths
+    - directory paths (all supported files, recursive)
+    - glob patterns like ``notes/*.md`` or ``**/*.pdf``
+    """
     candidates: list[Path] = []
 
     for doc in docs:
+        expanded = sorted(glob.glob(doc, recursive=True))
+        if expanded:
+            for entry in expanded:
+                path = Path(entry).expanduser().resolve()
+                if path.is_dir():
+                    candidates.extend(FileTypeRouter.collect_supported_files(path, recursive=True))
+                elif path.is_file():
+                    if not FileTypeRouter.has_supported_extension(path):
+                        raise typer.BadParameter(f"Unsupported file extension: {path}")
+                    candidates.append(path)
+                else:
+                    raise typer.BadParameter(f"Document path does not exist: {path}")
+            continue
+
         path = Path(doc).expanduser().resolve()
-        if path.exists() and path.is_file():
-            candidates.append(path)
+        if path.exists():
+            if path.is_dir():
+                candidates.extend(FileTypeRouter.collect_supported_files(path, recursive=True))
+            elif path.is_file():
+                if not FileTypeRouter.has_supported_extension(path):
+                    raise typer.BadParameter(f"Unsupported file extension: {path}")
+                candidates.append(path)
+            else:
+                raise typer.BadParameter(f"Document path is not a file or directory: {path}")
+        else:
+            raise typer.BadParameter(f"Document path does not exist: {path}")
 
     if docs_dir:
         base = Path(docs_dir).expanduser().resolve()
@@ -56,7 +86,6 @@ def _collect_documents(docs: list[str], docs_dir: Optional[str]) -> list[str]:
         unique.append(key)
 
     return unique
-
 
 def register(app: typer.Typer) -> None:
     @app.command("list")
