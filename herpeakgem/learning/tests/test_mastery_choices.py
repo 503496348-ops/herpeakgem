@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from deeptutor.capabilities.mastery.choices import (
+from herpeakgem.capabilities.mastery.choices import (
     format_options,
     has_option_bodies,
     parse_options,
