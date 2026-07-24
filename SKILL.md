@@ -58,3 +58,13 @@ python3 scripts/cli.py doctor
 ```bash
 python3 -m pytest tests/ -q
 ```
+
+## J-Space 增强（深度推理/模式路由）
+
+基于 J-Space Cognition Suite v3.2 的深度推理协议增强教学推理：
+- 解释门（歧义分离→承诺解释）
+- 七种工作模式路由（AUTO/FOCUS/DEEP/DENSE/EXTERNAL/EMPIRICAL/RECOVERY）
+- 深度循环（Frame→Bridge→Derive→Stress→Commit→Checkpoint）
+- 顺序检查（结论先行回退）
+
+详见 `references/j-space-deep-reasoning.md`
