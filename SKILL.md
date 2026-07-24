@@ -1,6 +1,10 @@
 ---
 name: herpeakgem
 description: "他山之石智能教育平台 — 多 Agent 协作教学、知识库管理、Web 服务"
+license: MIT
+metadata:
+  author: 503496348-ops
+  version: 1.0.0
 triggers:
   - "教育"
   - "教学"
