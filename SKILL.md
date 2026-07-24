@@ -5,17 +5,19 @@ license: MIT
 metadata:
   author: 503496348-ops
   version: 1.0.0
-triggers:
-  - "教育"
-  - "教学"
-  - "智能教育"
-  - "Agent教学"
-  - "知识库"
-  - "herpeakgem"
-  - "他山之石"
 ---
 
 # HerPeakGem — 他山之石智能教育平台
+
+## 触发条件
+
+- "教育"
+- "教学"
+- "智能教育"
+- "Agent教学"
+- "知识库"
+- "herpeakgem"
+- "他山之石"
 
 Agent-Native 的个性化教学平台，支持多 Agent 协作教学、知识库管理、Web 服务。
 
