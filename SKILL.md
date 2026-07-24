@@ -68,3 +68,12 @@ python3 -m pytest tests/ -q
 - 顺序检查（结论先行回退）
 
 详见 `references/j-space-deep-reasoning.md`
+
+## DNA Memory 融合（跨session学习+偏好记忆）
+
+基于 [DNA Memory](https://github.com/AIPMAndy/dna-memory) 跨session学习增强：
+- 教学场景记忆分型（学生偏好/已掌握知识点/错误模式/教学策略）
+- 跨session学习循环（recall→调整→提取→写入）
+- 有界记忆原则（只记结论不记transcript）
+
+详见 `references/dna-memory-learning-pattern.md`
