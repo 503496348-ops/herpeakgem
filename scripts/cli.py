@@ -6,7 +6,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-def cmd_serve(args):
+def cmd_serve(args: list[str]) -> None:
     """Start HerPeakGem web server."""
     try:
         from herpeakgem.runtime.launcher import start
@@ -15,7 +15,7 @@ def cmd_serve(args):
     except ImportError as e:
         print(json.dumps({"error": str(e), "fix": "pip install -e ."}, ensure_ascii=False))
 
-def cmd_setup(args):
+def cmd_setup(args: list[str]) -> None:
     """Run PocketBase collection bootstrap."""
     try:
         from scripts.pb_setup import main as pb_main
@@ -23,7 +23,7 @@ def cmd_setup(args):
     except Exception as e:
         print(json.dumps({"error": str(e), "status": "setup_failed"}, ensure_ascii=False))
 
-def cmd_update(args):
+def cmd_update(args: list[str]) -> None:
     """Check for updates."""
     try:
         from scripts.update import main as update_main
@@ -31,7 +31,7 @@ def cmd_update(args):
     except Exception as e:
         print(json.dumps({"error": str(e), "status": "update_check_failed"}, ensure_ascii=False))
 
-def cmd_doctor(args):
+def cmd_doctor(args: list[str]) -> None:
     """Run health diagnostics."""
     try:
         from scripts.doctor import main as doctor_main
@@ -39,7 +39,7 @@ def cmd_doctor(args):
     except Exception as e:
         print(json.dumps({"error": str(e)}, ensure_ascii=False))
 
-def cmd_skills(args):
+def cmd_skills(args: list[str]) -> None:
     """List available skills."""
     skills_dir = PROJECT_ROOT / 'herpeakgem' / 'skills' / 'builtin'
     if skills_dir.exists():
@@ -49,7 +49,7 @@ def cmd_skills(args):
     else:
         print("  (no built-in skills found)")
 
-def cmd_info(args):
+def cmd_info(args: list[str]) -> None:
     """Show product info."""
     # Count modules
     pkg_dir = PROJECT_ROOT / 'herpeakgem'
@@ -65,7 +65,7 @@ def cmd_info(args):
         "status": "ok"
     }, ensure_ascii=False, indent=2))
 
-def main():
+def main() -> None:
     p = argparse.ArgumentParser(description='HerPeakGem 他山之石智能教育平台')
     sub = p.add_subparsers(dest='command')
 
